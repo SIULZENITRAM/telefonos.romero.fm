@@ -1,0 +1,105 @@
+body {
+    font-family:"Lucida Grande",Tahoma,Arial,sans-serif;
+font-size:small;
+text-align:center;
+align: center;
+}
+
+
+#numeroInput1 {
+background: #4F800A;
+border-bottom: 0px;
+border-bottom-left-radius: 6px 6px;
+border-bottom-right-radius: 6px 6px;
+border-left: 1px solid #253C05;
+border-right: 0px;
+border-top: 1px solid #253C05;
+border-top-left-radius: 6px 6px;
+border-top-right-radius: 6px 6px;
+color: #E9F9BD;
+font-size: 64px;
+height: 104px;
+line-height: 104px;
+margin-right: 20px;
+padding: 0px 20px;
+width: 128px;
+ size: 3;
+
+}
+
+#numeroInput2 {
+background: #4F800A;
+border-bottom: 0px;
+border-bottom-left-radius: 6px 6px;
+border-bottom-right-radius: 6px 6px;
+border-left: 1px solid #253C05;
+border-right: 0px;
+border-top: 1px solid #253C05;
+border-top-left-radius: 6px 6px;
+border-top-right-radius: 6px 6px;
+color: #E9F9BD;
+font-size: 64px;
+height: 104px;
+line-height: 104px;
+margin-right: 20px;
+padding: 0px 20px;
+width: 128px;
+ size: 3;
+
+}
+
+
+#numeroInput3 {
+background: #4F800A;
+border-bottom: 0px;
+border-bottom-left-radius: 6px 6px;
+border-bottom-right-radius: 6px 6px;
+border-left: 1px solid #253C05;
+border-right: 0px;
+border-top: 1px solid #253C05;
+border-top-left-radius: 6px 6px;
+border-top-right-radius: 6px 6px;
+color: #E9F9BD;
+font-size: 64px;
+height: 104px;
+line-height: 104px;
+margin-right: 20px;
+padding: 0px 20px;
+width: 228px;
+ size: 3;
+
+}
+
+
+
+#numeroButton {
+
+
+
+   display:none;
+
+}
+
+
+#numeroLabel {
+    font-size: 64px;
+line-height: 104px;
+
+    
+}
+
+
+#razonres {
+    padding: 50px;
+    padding-top: 100px;
+    font-size: 64px;
+line-height: 104px;
+
+    
+}
+
+
+
+#footer {
+ position: absolute; bottom: 10;   
+}

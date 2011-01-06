@@ -1,0 +1,164 @@
+<!doctype html><!-- simplified doctype works for all previous versions of HTML as well -->
+
+<!-- Paul Irish's technique for targeting IE, modified to only target IE6, applied to the html element instead of body -->
+<!--[if lt IE 7 ]><html lang="en" class="no-js ie6"><![endif]-->
+<!--[if (gt IE 6)|!(IE)]><!--><html lang="en" class="no-js"><!--<![endif]-->
+
+<head>
+	<!-- simplified character encoding -->
+	<meta charset="utf-8">
+
+	<title>este numero que es</title>
+	<meta name="description" content="Easy HTML5 Template">
+	<meta name="author" content="">
+
+	<!-- Delete these two icon references once you've placed them in the root directory with these file names -->
+	<!-- favicon 16x16 -->
+	<link rel="shortcut icon" href="/favicon.ico">
+	<!-- apple touch icon 57x57 -->
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+	<!-- Main style sheet. Change version number in query string to force styles refresh -->
+	<!-- Link element no longer needs type attribute -->
+	<link rel="stylesheet" href="css/style.css?v=1.0">
+<link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
+
+<link rel="stylesheet" type="text/css" media="all" href="css/960.css" />
+
+	<!-- Modernizr for feature detection of CSS3 and HTML5; must be placed in the "head" -->
+	<!-- Script tag no longer needs type attribute -->
+	<script src="js/modernizr-1.6.min.js"></script>
+
+	<script src="js/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="js/jquery.autotab-1.1b.js"></script>
+
+	<!-- Remove the script reference below if you're using Modernizr -->
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+</head>
+
+<!-- If possible, use the body as the container -->
+<!-- The "home" class is an example of a dynamic class created on the server for page-specific targeting -->
+<body>
+	
+	<!-- ******************************************************************** -->
+	<!-- The content below is for demonstration of some common HTML5 elements  -->
+	<!-- More than likely you'll rip out everything except header/section/footer and start fresh -->
+	
+	<!-- First header has an ID so you can give it individual styles, and target stuff inside it -->
+	<header id="hd1">
+
+	
+
+	</header><!-- #hd1 -->
+
+	    <script type="text/javascript">
+	      
+		$(document).ready(function(){
+		    console.log('hello');
+		    $.getJSON('js/data.json', function(data) {
+			console.log(data.length);
+			setEmpresas(data);
+			
+		      });
+		    $('#numeroForm').submit(function() {
+			numero = $('#numeroInput').val();
+			$('#razonres').html(getEmpresa(numero));
+			 
+			return false;
+		      });
+
+		    $('#numeroInput1, #numeroInput2, #numeroInput3').autotab_magic().autotab_filter('numeric');
+
+		  });
+
+var empresas = Array();
+function setEmpresas(data) {
+  empresas = data;
+}
+
+	      function getEmpresa(numeroInput) {
+		
+		numero = parseInt(numeroInput);
+		if (numeroInput.length==10) {
+		  for (empresa in empresas) {
+		    ranges = empresas[empresa]; 
+		    while (1) {
+		      min = ranges[0][0];
+		      max = ranges.slice(-1)[0][1];
+		      if ((numero < min) || (numero > max)) 
+			break;
+		      else {
+			if (ranges.length==1)
+			  return empresa;
+			else {
+			  mid = ranges[parseInt(ranges.length/2)];
+			  if (numero < mid[0]) 
+			    ranges = ranges.slice(0, parseInt(ranges.length/2));
+			  else if (numero > mid[1])
+			    ranges = ranges.slice(parseInt(ranges.length/2));
+			  else
+			    return empresa;
+			}
+		      }
+		    }
+		  }
+		}
+		return "NUMERO INVALIDO";
+	      }
+	    </script>
+			
+	<section id="main">
+
+		<!-- Each section should begin with a new h1 (not h2), and optionally a header -->
+		<!-- You can have more than one header/footer pair on a page -->
+
+<div style="text-align:center;padding-top:100px;">
+		<form action="#" method="get" id="numeroForm">
+
+		<span id="numeroLabel">Tel: <input type="text" name="prefix" id="numeroInput1" MAXLENGTH=3 /> 
+		<input type="text" name="prefix2" id="numeroInput2" MAXLENGTH=3 /> 
+
+<input type="text" name="sufix" id="numeroInput3" MAXLENGTH=4 />
+
+		<input type="submit" value="Submit" id="numeroButton"/></span>
+		</form>
+<br /><br /><br /><br />
+		<span id="razonres"></span>
+</div>
+		<!-- The h2 below is a sub heading relative to the h1 in this section, not for the whole document -->
+	
+		<footer style="background-color:black;color:white;height:180px;width:100%;text-align:center;margin-top:50px;" id="footer">
+		<!-- incite a riot: http://24ways.org/2009/incite-a-riot -->
+		 <div style="padding:50px;"><p>Author: Mario Romero</p></div>
+		 
+		</footer>
+
+
+
+
+
+
+
+
+
+<!-- Below is your script file, which has a basic JavaScript design pattern that you can optionally use -->
+<!-- Keep this and plugin scripts at the bottom for faster page load; combining and minifying scripts is recommended -->
+<script src="js/general.js"></script>
+
+<!-- asynchronous analytics code by Mathias Bynens; change UA-XXXXX-X to your own code; http://mathiasbynens.be/notes/async-analytics-snippet -->
+<!-- this can also be placed in the <head> if you want page views to be tracked quicker -->
+<script>
+var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+(function(d, t) {
+	var g = d.createElement(t),
+		s = d.getElementsByTagName(t)[0];
+	g.async = true;
+	g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g, s);
+})(document, 'script');
+</script>
+</body>
+</html>
