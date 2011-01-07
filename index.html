@@ -20,11 +20,11 @@
 
 	<!-- Main style sheet. Change version number in query string to force styles refresh -->
 	<!-- Link element no longer needs type attribute -->
-	<link rel="stylesheet" href="css/style.css?v=1.0">
+
 <link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
 
 <link rel="stylesheet" type="text/css" media="all" href="css/960.css" />
-
+	<link rel="stylesheet" href="css/style.css?v=1.0">
 	<!-- Modernizr for feature detection of CSS3 and HTML5; must be placed in the "head" -->
 	<!-- Script tag no longer needs type attribute -->
 	<script src="js/modernizr-1.6.min.js"></script>
@@ -42,7 +42,7 @@
 
 <!-- If possible, use the body as the container -->
 <!-- The "home" class is an example of a dynamic class created on the server for page-specific targeting -->
-<body style="background-color:#111111;color:#E9F9BD;">
+<body>
 	
 	<!-- ******************************************************************** -->
 	<!-- The content below is for demonstration of some common HTML5 elements  -->
@@ -60,12 +60,11 @@
 		$(document).ready(function(){
 		    console.log('hello');
 		    $.getJSON('js/data.json', function(data) {
-			console.log(data.length);
 			setEmpresas(data);
 			
 		      });
 		    $('#numeroInput1, #numeroInput2, #numeroInput3').keyup(function() {
-			if(($('#numeroInput1').val().length > 2)) {
+			if (($('#numeroInput1').val().length > 2)) {
 			  prefix =  $('#numeroInput1').val()+$('#numeroInput2').val()+$('#numeroInput3').val();
 			  manyshort = 10 - prefix.length;
 			  searchmin = prefix;
@@ -79,8 +78,15 @@
 			  }
 			  results = getEmpresas(searchmin,searchmax);
 			  $('#razonres').html('');
+			  if (!results['isSet']) {
+			    $('#razonres').html('Numero no asignado');
+			    return;
+			  } else {
+			    delete results['isSet'];
+			  }
+			    
 			  for (empresa in results) {
-			    empresahtml = "<span style='text-decoration:underline'>" + empresa + "</span><br />";
+			    empresahtml = "<span class='empresa'>" + empresa + "</span><br />";
 			    for (tup in results[empresa]) {
 			      numeromin = results[empresa][tup][0] + "";
 			      nirmin = numeromin.substring(0,3);
@@ -119,6 +125,7 @@ function getEmpresas(smin, smax) {
   smin = parseInt(smin);
   smax = parseInt(smax);
   results = {};
+  results['isSet'] = false;
   for (empresa in empresas) {
     ranges = empresas[empresa];
     for (range in ranges) {
@@ -127,6 +134,7 @@ function getEmpresas(smin, smax) {
       if ((smax < rangemin) || (smin > rangemax))
 	continue;
       else {
+	results['isSet'] = true;
 	if (empresa in results)
 	  results[empresa].push(ranges[range]);
 	else {
@@ -148,7 +156,7 @@ function getEmpresas(smin, smax) {
 	
 	
 
-<div id="header">¿como saber a que compañía pertenece un número telefónico en méxico?</div>
+<div id="header">rangos de números telefónicos en méxico por empresa.</div>
 
 
 
@@ -158,7 +166,7 @@ function getEmpresas(smin, smax) {
 <div id="formContainer">
 		<form action="#" method="get" id="numeroForm">
 
-		<span id="numeroLabel">+52
+  <span id="numeroLabel">+52
 		<input type="text" name="prefix" id="numeroInput1" class="biginputs"  MAXLENGTH=3 /> 
 		<input type="text" name="prefix2" id="numeroInput2" class="biginputs" MAXLENGTH=3 /> 
 
@@ -178,7 +186,7 @@ function getEmpresas(smin, smax) {
 
 
 		<!-- The h2 below is a sub heading relative to the h1 in this section, not for the whole document -->
-		<div id="stats">email: <a href="mailto:mario@romero.fm">mario@romero.fm.</a> Sigueme en twitter <a href="#">aquí.</a>
+		<div id="stats">email: <a href="mailto:mario@romero.fm">mario@romero.fm.</a> sígueme en twitter <a href="#">aquí.</a>
 
 
 		</div>
