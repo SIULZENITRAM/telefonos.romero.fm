@@ -28,8 +28,11 @@ function getEmpresas(smin, smax) {
   return results;
 }
 $(document).ready(function(){
+    $('#formContainer :input').attr('disabled', true);
     $.getJSON('js/data.json', function(data) {
 	setEmpresas(data);
+	$('#formContainer :input').removeAttr('disabled');
+
       });
     $('#numeroInput1, #numeroInput2, #numeroInput3').keyup(function() {
 	if (($('#numeroInput1').val().length > 2)) {
