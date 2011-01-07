@@ -31,6 +31,7 @@
 
 	<script src="js/jquery-1.4.4.min.js"></script>
 	<script type="text/javascript" src="js/jquery.autotab-1.1b.js"></script>
+	<script type="text/javascript" src="js/jquery.glow.js"></script>
 
 	<!-- Remove the script reference below if you're using Modernizr -->
 	<!--[if lt IE 9]>
@@ -41,7 +42,7 @@
 
 <!-- If possible, use the body as the container -->
 <!-- The "home" class is an example of a dynamic class created on the server for page-specific targeting -->
-<body>
+<body style="background-color:#111111;color:#E9F9BD;">
 	
 	<!-- ******************************************************************** -->
 	<!-- The content below is for demonstration of some common HTML5 elements  -->
@@ -63,12 +64,47 @@
 			setEmpresas(data);
 			
 		      });
-		    $('#numeroForm').submit(function() {
-			numero = $('#numeroInput').val();
-			$('#razonres').html(getEmpresa(numero));
-			 
-			return false;
+		    $('#numeroInput1, #numeroInput2, #numeroInput3').keyup(function() {
+			if(($('#numeroInput1').val().length > 2)) {
+			  prefix =  $('#numeroInput1').val()+$('#numeroInput2').val()+$('#numeroInput3').val();
+			  manyshort = 10 - prefix.length;
+			  searchmin = prefix;
+			  searchmax = prefix;
+			  console.log('short');
+			  console.log(manyshort);
+			  for (i=0; i<manyshort; i++) {
+			    searchmin+='0';
+			    searchmax+='9';
+
+			  }
+			  results = getEmpresas(searchmin,searchmax);
+			  $('#razonres').html('');
+			  for (empresa in results) {
+			    empresahtml = "<span style='text-decoration:underline'>" + empresa + "</span><br />";
+			    for (tup in results[empresa]) {
+			      numeromin = results[empresa][tup][0] + "";
+			      nirmin = numeromin.substring(0,3);
+			      sermin = numeromin.substring(3,6);
+			      finmin = numeromin.substring(6, 10);
+			      mintxt = nirmin + " " + sermin + " " + finmin;
+			      numeromax = results[empresa][tup][1] + "";
+			      nirmax = numeromax.substring(0,3);
+			      sermax = numeromax.substring(3,6);
+			      finmax = numeromax.substring(6, 10);
+			      maxtxt = nirmax + " " + sermax + " " + finmax;
+			      empresahtml += "del " + mintxt + " al " + maxtxt  + "<br />";
+			    }
+			    empresahtml += "<br />";
+			    $('#razonres').append(empresahtml);
+			  }
+
+			}
+			else
+			  $('#razonres').html('');
 		      });
+
+
+		    	
 
 		    $('#numeroInput1, #numeroInput2, #numeroInput3').autotab_magic().autotab_filter('numeric');
 
@@ -79,62 +115,75 @@ function setEmpresas(data) {
   empresas = data;
 }
 
-	      function getEmpresa(numeroInput) {
-		
-		numero = parseInt(numeroInput);
-		if (numeroInput.length==10) {
-		  for (empresa in empresas) {
-		    ranges = empresas[empresa]; 
-		    while (1) {
-		      min = ranges[0][0];
-		      max = ranges.slice(-1)[0][1];
-		      if ((numero < min) || (numero > max)) 
-			break;
-		      else {
-			if (ranges.length==1)
-			  return empresa;
-			else {
-			  mid = ranges[parseInt(ranges.length/2)];
-			  if (numero < mid[0]) 
-			    ranges = ranges.slice(0, parseInt(ranges.length/2));
-			  else if (numero > mid[1])
-			    ranges = ranges.slice(parseInt(ranges.length/2));
-			  else
-			    return empresa;
-			}
-		      }
-		    }
-		  }
-		}
-		return "NUMERO INVALIDO";
-	      }
+function getEmpresas(smin, smax) {
+  smin = parseInt(smin);
+  smax = parseInt(smax);
+  results = {};
+  for (empresa in empresas) {
+    ranges = empresas[empresa];
+    for (range in ranges) {
+      rangemin = ranges[range][0];
+      rangemax = ranges[range][1];
+      if ((smax < rangemin) || (smin > rangemax))
+	continue;
+      else {
+	if (empresa in results)
+	  results[empresa].push(ranges[range]);
+	else {
+	  results[empresa] = [];
+	  results[empresa].push(ranges[range]);
+		  
+	}
+      }
+    }
+  }
+  return results;
+}
+
+	      
+
+
 	    </script>
-			
-	<section id="main">
+		
+	
+	
+
+<div id="header">¿como saber a que compañía pertenece un número telefónico en méxico?</div>
+
+
 
 		<!-- Each section should begin with a new h1 (not h2), and optionally a header -->
 		<!-- You can have more than one header/footer pair on a page -->
 
-<div style="text-align:center;padding-top:100px;">
+<div id="formContainer">
 		<form action="#" method="get" id="numeroForm">
 
-		<span id="numeroLabel">Tel: <input type="text" name="prefix" id="numeroInput1" MAXLENGTH=3 /> 
-		<input type="text" name="prefix2" id="numeroInput2" MAXLENGTH=3 /> 
+		<span id="numeroLabel">+52
+		<input type="text" name="prefix" id="numeroInput1" class="biginputs"  MAXLENGTH=3 /> 
+		<input type="text" name="prefix2" id="numeroInput2" class="biginputs" MAXLENGTH=3 /> 
 
-<input type="text" name="sufix" id="numeroInput3" MAXLENGTH=4 />
+		<input type="text" name="sufix" id="numeroInput3" class="biginputs" MAXLENGTH=4 />
 
 		<input type="submit" value="Submit" id="numeroButton"/></span>
 		</form>
-<br /><br /><br /><br />
-		<span id="razonres"></span>
-</div>
+
+
+
+
+		<div id="razonres"></div>
+
+
+
+		</div>
+
+
 		<!-- The h2 below is a sub heading relative to the h1 in this section, not for the whole document -->
-	
-		<footer style="background-color:black;color:white;height:180px;width:100%;text-align:center;margin-top:50px;" id="footer">
-		<!-- incite a riot: http://24ways.org/2009/incite-a-riot -->
-		 <div style="padding:50px;"><p>Author: Mario Romero</p></div>
-		 
-		</footer>
+		<div id="stats">email: <a href="mailto:mario@romero.fm">mario@romero.fm.</a> Sigueme en twitter <a href="#">aquí.</a>
+
+
+		</div>
+
+		
 
 
 
