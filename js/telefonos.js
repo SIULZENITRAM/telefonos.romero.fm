@@ -18,12 +18,9 @@ function getEmpresas(smin, smax) {
 	break
       else {
 	results['isSet'] = true;
-	if (empresa in results)
-	  results[empresa].push(ranges[range]);
-	else {
+	if (!(empresa in results))
 	  results[empresa] = [];
-	  results[empresa].push(ranges[range]);
-	}
+	results[empresa].push(ranges[range]);
       }
     }
   }
