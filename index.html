@@ -1,221 +1,50 @@
-<!doctype html><!-- simplified doctype works for all previous versions of HTML as well -->
-
+<!doctype html>
 <!-- Paul Irish's technique for targeting IE, modified to only target IE6, applied to the html element instead of body -->
 <!--[if lt IE 7 ]><html lang="en" class="no-js ie6"><![endif]-->
-<!--[if (gt IE 6)|!(IE)]><!--><html lang="en" class="no-js"><!--<![endif]-->
+<!--[if (gt IE 6)|!(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
 
 <head>
-	<!-- simplified character encoding -->
-	<meta charset="utf-8">
-
-	<title>este numero que es</title>
-	<meta name="description" content="Easy HTML5 Template">
-	<meta name="author" content="">
-
-	<!-- Delete these two icon references once you've placed them in the root directory with these file names -->
-	<!-- favicon 16x16 -->
-	<link rel="shortcut icon" href="/favicon.ico">
-	<!-- apple touch icon 57x57 -->
-	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-
-	<!-- Main style sheet. Change version number in query string to force styles refresh -->
-	<!-- Link element no longer needs type attribute -->
-
-<link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
-
-<link rel="stylesheet" type="text/css" media="all" href="css/960.css" />
-	<link rel="stylesheet" href="css/style.css?v=1.0">
-	<!-- Modernizr for feature detection of CSS3 and HTML5; must be placed in the "head" -->
-	<!-- Script tag no longer needs type attribute -->
-	<script src="js/modernizr-1.6.min.js"></script>
-
-	<script src="js/jquery-1.4.4.min.js"></script>
-	<script type="text/javascript" src="js/jquery.autotab-1.1b.js"></script>
-	<script type="text/javascript" src="js/jquery.glow.js"></script>
-
-	<!-- Remove the script reference below if you're using Modernizr -->
-	<!--[if lt IE 9]>
-	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-
+  <!-- simplified character encoding -->
+  <meta charset="utf-8">
+  <title>rangos de números telefónicos en méxico por empresa</title>
+  <meta name="description" content="¿como saber a que compañía pertenece un teléfono en méxico?">
+  <meta name="author" content="mario@romero.fm">
+  <link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="css/960.css" />
+  <link rel="stylesheet" href="css/style.css?v=1.0">
+  <script src="js/modernizr-1.6.min.js"></script>
+  <script src="js/jquery-1.4.4.min.js"></script>
+  <script type="text/javascript" src="js/jquery.autotab-1.1b.js"></script>
+  <script type="text/javascript" src="js/telefonos.js"></script>
 </head>
 
-<!-- If possible, use the body as the container -->
-<!-- The "home" class is an example of a dynamic class created on the server for page-specific targeting -->
 <body>
-	
-	<!-- ******************************************************************** -->
-	<!-- The content below is for demonstration of some common HTML5 elements  -->
-	<!-- More than likely you'll rip out everything except header/section/footer and start fresh -->
-	
-	<!-- First header has an ID so you can give it individual styles, and target stuff inside it -->
-	<header id="hd1">
-
-	
-
-	</header><!-- #hd1 -->
-
-	    <script type="text/javascript">
-	      
-		$(document).ready(function(){
-		    console.log('hello');
-		    $.getJSON('js/data.json', function(data) {
-			setEmpresas(data);
-			
-		      });
-		    $('#numeroInput1, #numeroInput2, #numeroInput3').keyup(function() {
-			if (($('#numeroInput1').val().length > 2)) {
-			  prefix =  $('#numeroInput1').val()+$('#numeroInput2').val()+$('#numeroInput3').val();
-			  manyshort = 10 - prefix.length;
-			  searchmin = prefix;
-			  searchmax = prefix;
-			  console.log('short');
-			  console.log(manyshort);
-			  for (i=0; i<manyshort; i++) {
-			    searchmin+='0';
-			    searchmax+='9';
-
-			  }
-			  results = getEmpresas(searchmin,searchmax);
-			  $('#razonres').html('');
-			  if (!results['isSet']) {
-			    $('#razonres').html('Numero no asignado');
-			    return;
-			  } else {
-			    delete results['isSet'];
-			  }
-			    
-			  for (empresa in results) {
-			    empresahtml = "<span class='empresa'>" + empresa + "</span><br />";
-			    for (tup in results[empresa]) {
-			      numeromin = results[empresa][tup][0] + "";
-			      nirmin = numeromin.substring(0,3);
-			      sermin = numeromin.substring(3,6);
-			      finmin = numeromin.substring(6, 10);
-			      mintxt = nirmin + " " + sermin + " " + finmin;
-			      numeromax = results[empresa][tup][1] + "";
-			      nirmax = numeromax.substring(0,3);
-			      sermax = numeromax.substring(3,6);
-			      finmax = numeromax.substring(6, 10);
-			      maxtxt = nirmax + " " + sermax + " " + finmax;
-			      empresahtml += "del " + mintxt + " al " + maxtxt  + "<br />";
-			    }
-			    empresahtml += "<br />";
-			    $('#razonres').append(empresahtml);
-			  }
-
-			}
-			else
-			  $('#razonres').html('');
-		      });
-
-
-		    	
-
-		    $('#numeroInput1, #numeroInput2, #numeroInput3').autotab_magic().autotab_filter('numeric');
-
-		  });
-
-var empresas = Array();
-function setEmpresas(data) {
-  empresas = data;
-}
-
-function getEmpresas(smin, smax) {
-  smin = parseInt(smin);
-  smax = parseInt(smax);
-  results = {};
-  results['isSet'] = false;
-  for (empresa in empresas) {
-    ranges = empresas[empresa];
-    for (range in ranges) {
-      rangemin = ranges[range][0];
-      rangemax = ranges[range][1];
-      if ((smax < rangemin) || (smin > rangemax))
-	continue;
-      else {
-	results['isSet'] = true;
-	if (empresa in results)
-	  results[empresa].push(ranges[range]);
-	else {
-	  results[empresa] = [];
-	  results[empresa].push(ranges[range]);
-		  
-	}
-      }
-    }
-  }
-  return results;
-}
-
-	      
-
-
-	    </script>
-		
-	
-	
-
-<div id="header">rangos de números telefónicos en méxico por empresa.</div>
-
-
-
-		<!-- Each section should begin with a new h1 (not h2), and optionally a header -->
-		<!-- You can have more than one header/footer pair on a page -->
-
-<div id="formContainer">
-		<form action="#" method="get" id="numeroForm">
-
-  <span id="numeroLabel">+52
-		<input type="text" name="prefix" id="numeroInput1" class="biginputs"  MAXLENGTH=3 /> 
-		<input type="text" name="prefix2" id="numeroInput2" class="biginputs" MAXLENGTH=3 /> 
-
-		<input type="text" name="sufix" id="numeroInput3" class="biginputs" MAXLENGTH=4 />
-
-		<input type="submit" value="Submit" id="numeroButton"/></span>
-		</form>
-
-
-
-
-		<div id="razonres"></div>
-
-
-
-		</div>
-
-
-		<!-- The h2 below is a sub heading relative to the h1 in this section, not for the whole document -->
-		<div id="stats">email: <a href="mailto:mario@romero.fm">mario@romero.fm.</a> sígueme en twitter <a href="#">aquí.</a>
-
-
-		</div>
-
-		
-
-
-
-
-
-
-
-
-
-<!-- Below is your script file, which has a basic JavaScript design pattern that you can optionally use -->
-<!-- Keep this and plugin scripts at the bottom for faster page load; combining and minifying scripts is recommended -->
-<script src="js/general.js"></script>
-
-<!-- asynchronous analytics code by Mathias Bynens; change UA-XXXXX-X to your own code; http://mathiasbynens.be/notes/async-analytics-snippet -->
-<!-- this can also be placed in the <head> if you want page views to be tracked quicker -->
-<script>
-var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
-(function(d, t) {
-	var g = d.createElement(t),
-		s = d.getElementsByTagName(t)[0];
-	g.async = true;
-	g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	s.parentNode.insertBefore(g, s);
-})(document, 'script');
-</script>
+  <div id="header">rangos de números telefónicos en méxico por empresa.</div>
+  <div id="formContainer">
+    <form action="#" method="get" id="numeroForm">
+      <span id="numeroLabel">+52
+      <input type="text" name="prefix" id="numeroInput1" class="biginputs"  MAXLENGTH=3 /> 
+      <input type="text" name="prefix2" id="numeroInput2" class="biginputs" MAXLENGTH=3 /> 
+      <input type="text" name="sufix" id="numeroInput3" class="biginputs" MAXLENGTH=4 />
+      <input type="submit" value="Submit" id="numeroButton"/></span>
+    </form>
+    <div id="razonres"></div>
+  </div>
+  <div id="stats">
+    email: <a href="mailto:mario@romero.fm">mario@romero.fm.</a> sígueme en twitter <a href="#">aquí.</a>
+  </div>
+  <!-- asynchronous analytics code by Mathias Bynens; change UA-XXXXX-X to your own code; http://mathiasbynens.be/notes/async-analytics-snippet -->
+  <script>
+    var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+	s = d.getElementsByTagName(t)[0];
+      g.async = true;
+      g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    })(document, 'script');
+  </script>
 </body>
 </html>
