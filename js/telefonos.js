@@ -12,8 +12,10 @@ function getEmpresas(smin, smax) {
     for (range in ranges) {
       rangemin = ranges[range][0];
       rangemax = ranges[range][1];
-      if ((smax < rangemin) || (smin > rangemax))
+      if  (smin > rangemax)
 	continue;
+      else if (smax < rangemin) 
+	break
       else {
 	results['isSet'] = true;
 	if (empresa in results)
@@ -27,6 +29,21 @@ function getEmpresas(smin, smax) {
   }
   return results;
 }
+function genRangeHTML(tup) {
+  range = results[empresa][tup];
+  numeromin = range[0] + "";
+  nirmin = numeromin.substring(0,3);
+  sermin = numeromin.substring(3,6);
+  finmin = numeromin.substring(6, 10);
+  mintxt = nirmin + " " + sermin + " " + finmin;
+  numeromax = range[1] + "";
+  nirmax = numeromax.substring(0,3);
+  sermax = numeromax.substring(3,6);
+  finmax = numeromax.substring(6, 10);
+  maxtxt = nirmax + " " + sermax + " " + finmax;
+  return "del " + mintxt + " al " + maxtxt  + "<br />";
+}
+
 $(document).ready(function(){
     $('#formContainer :input').attr('disabled', true);
     $.getJSON('js/data.json', function(data) {
@@ -35,7 +52,7 @@ $(document).ready(function(){
 
       });
     $('#numeroInput1, #numeroInput2, #numeroInput3').keyup(function() {
-	if (($('#numeroInput1').val().length > 2)) {
+	if (($('#numeroInput1').val().length > 1)) {
 	  prefix =  $('#numeroInput1').val()+$('#numeroInput2').val()+$('#numeroInput3').val();
 	  manyshort = 10 - prefix.length;
 	  searchmin = prefix;
@@ -55,17 +72,7 @@ $(document).ready(function(){
 	  for (empresa in results) {
 	    empresahtml = "<span class='empresa'>" + empresa + "</span><br />";
 	    for (tup in results[empresa]) {
-	      numeromin = results[empresa][tup][0] + "";
-	      nirmin = numeromin.substring(0,3);
-	      sermin = numeromin.substring(3,6);
-	      finmin = numeromin.substring(6, 10);
-	      mintxt = nirmin + " " + sermin + " " + finmin;
-	      numeromax = results[empresa][tup][1] + "";
-	      nirmax = numeromax.substring(0,3);
-	      sermax = numeromax.substring(3,6);
-	      finmax = numeromax.substring(6, 10);
-	      maxtxt = nirmax + " " + sermax + " " + finmax;
-	      empresahtml += "del " + mintxt + " al " + maxtxt  + "<br />";
+	      empresahtml += genRangeHTML(tup);
 	    }
 	    empresahtml += "<br />";
 	    $('#razonres').append(empresahtml);
