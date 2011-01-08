@@ -1,3 +1,6 @@
+import simplejson
+import csv
+
 def csv_to_json_compressed(csvfile, outputfilename):
     """ convierte pnn_pg.csv al formato json usado por el app.
     el archivo csv fue originalmente bajado de 
